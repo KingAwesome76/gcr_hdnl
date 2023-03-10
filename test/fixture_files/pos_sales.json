@@ -1,0 +1,42 @@
+{
+  "type": "sales",
+  "version": "1801",
+  "data": [
+    {
+      "id": "22053014250000080096",
+      "shop": 10344,
+      "receipt": 96,
+      "transaction_type": "T",
+      "transaction_date": "2022-05-30T14:25:04",
+      "register_duration": 1,
+      "pay_duration": 0,
+      "register_code": 1,
+      "drawer": 1,
+      "employee_id": "NTRL",
+      "total_amount": 8.99,
+      "sales_period": 22,
+      "lines": [
+        {
+          "line_id": 1,
+          "set_part_id": 0,
+          "sales_type": "SALE",
+          "product": "30001769",
+          "quantity": 1,
+          "net_sales_amount": 8.99,
+          "gross_sales_amount": 8.99,
+          "price_including_vat": 8.99,
+          "purchase_price": 4.36,
+          "vat_code": "1",
+          "vat_amount": 1.56
+        }
+      ],
+      "payments": [
+        {
+          "line_id": 1,
+          "financial_code": "EFTSIM",
+          "amount": 8.99
+        }
+      ]
+    }
+  ]
+}

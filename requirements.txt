@@ -1,0 +1,10 @@
+#
+google-cloud-pubsub
+google-cloud-storage
+google-auth
+xmltodict
+ijr
+
+Flask
+google
+requests
