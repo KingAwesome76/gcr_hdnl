@@ -11,8 +11,8 @@ jsonify = jsonify
 secret = common.get_secrets('HEADER')
 
 
-@app.route("/aim_services/inbound", methods=['post', 'get'])
-def handle_aim_inbound():
+@app.route("/orders", methods=['post', 'get'])
+def handle_hdnl_orders_inbound():
     from backend_services import capture_requests as cr
     return cr.read_endpoint(request)
 

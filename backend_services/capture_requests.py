@@ -28,6 +28,7 @@ def get_set_globals():
         _LOGGER = common.initiate_logging(__name__)
     return
 
+
 def get_bucket(message_type):
     buckets = {
                "order": f"ijit_orders_{ENV}"
@@ -55,11 +56,7 @@ def read_endpoint(request):
         get_set_globals()
         doc_hash = hash(request.data)
         _LOGGER.info(request.get_data())
-        extension = common.ext(request.content_type)
-        if extension == 'xml':
-            message_content = xmltodict.parse(request.get_data())
-        else:
-            message_content = json.loads(request.get_data())
+        message_content = json.loads(request.get_data())
         ts = datetime.utcnow().strftime("%Y%m%d-%H%M%S%f")
         type_ = message_content.get('type', 'no_type')
         blob_prefix = f'{BLOB_BASE}/{type_}/'

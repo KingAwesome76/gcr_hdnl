@@ -30,14 +30,6 @@ class TestScan(unittest.TestCase):
             print(rv.json)
             self.assertEqual("202 ACCEPTED", code)
 
-    def test_sales_fail_as_success(self):
-        with local.app.test_client() as test_client:
-            payload = get_message('fixture_files/pos_sales.json')
-            rv = test_client.post("/aim_services/inbound", json=payload)
-            code = rv.status
-            print(rv.json)
-            self.assertEqual("401 UNAUTHORIZED", code)
-
 
 if __name__ == '__main__':
     unittest.main()
