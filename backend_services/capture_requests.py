@@ -16,9 +16,11 @@ _LOGGER = common.initiate_logging(__name__)
 
 
 def get_set_globals():
-    global config, mongo, _LOGGER, BLOB_BASE, PROJECT, ENV
+    global config, mongo, _LOGGER, BLOB_BASE, PROJECT, ENV, secret
     if not mongo:
         mongo = common.get_secrets('MONGO')
+    if not secret:
+        mongo = common.get_secrets('proxy_keys')
     if not config:
         config = common.get_document_by_id("gcr_hdnl", mongo, "common", "configs")
         BLOB_BASE = config.get('blob_base')
@@ -45,7 +47,8 @@ def get_topic(message_type):
 
 def read_endpoint(request):
     if flask.request.method == 'POST':
-        if not allowed(request.headers, secret):
+        get_set_globals()
+        if not allowed(request.headers, secret['hdnl']):
             _LOGGER.warning("no match for header credentials")
             return flask.Response(json.dumps({"error": "access denied"}), status=401, mimetype="application/json")
         if not request.data:
@@ -53,14 +56,14 @@ def read_endpoint(request):
                         "status": "record not captured"}
             _LOGGER.warning(f'schema_check: {response}')
             return flask.Response(json.dumps(response), status=200, mimetype="application/json")
-        get_set_globals()
+
         doc_hash = hash(request.data)
         _LOGGER.info(request.get_data())
         message_content = json.loads(request.get_data())
         ts = datetime.utcnow().strftime("%Y%m%d-%H%M%S%f")
         type_ = message_content.get('type', 'no_type')
         blob_prefix = f'{BLOB_BASE}/{type_}/'
-        file_name = f'{blob_prefix}msg_{ts}_{doc_hash}.{extension}'
+        file_name = f'{blob_prefix}msg_{ts}_{doc_hash}.json'
         common.store_to_bucket(request.data, file_name, request.content_type, buck=get_bucket(type_))
         if get_bucket(type_) == f"ijit_unknown_{ENV}":
             no_type_response = {"info": "a 'no_type' message has been stored. Only typed messages will be accepted.",

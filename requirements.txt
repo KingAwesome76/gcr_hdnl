@@ -1,10 +1,13 @@
 #
 google-cloud-pubsub
 google-cloud-storage
+google-cloud-logging
 google-auth
 xmltodict
 ijr
-
+google-cloud-secret-manager
 Flask
 google
 requests
+pymongo
+xmltodict
