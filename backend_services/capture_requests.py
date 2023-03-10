@@ -28,12 +28,6 @@ def get_set_globals():
         _LOGGER = common.initiate_logging(__name__)
     return
 
-
-def check_for_globals(func):
-    get_set_globals()
-    return func
-
-
 def get_bucket(message_type):
     buckets = {
                "order": f"ijit_orders_{ENV}"
@@ -77,10 +71,9 @@ def read_endpoint(request):
                                 }
             return flask.Response(json.dumps(no_type_response), status=201, mimetype="application/json")
 
-        common.publish(message_content, get_topic(type_), msg_type=type_, source='pos')
-        common.publish(message_content, f"{PROJECT}pos_feed", msg_type=type_, source='pos')
-        this_collection = f"axi_inbound_{type_}"
-        common.write_data_to_collection(message_content, mongo, 'pos', this_collection)
+        common.publish(message_content, get_topic(type_), msg_type=type_, source='hdnl')
+        this_collection = f"source_curator_{type_}"
+        common.write_data_to_collection(message_content, mongo, 'hdnl', this_collection)
         response = dict(rec_locator=hash(file_name), type=type_, status='captured')
         return flask.Response(json.dumps(response), status=202, mimetype="application/json")
     if flask.request.method == 'GET':
